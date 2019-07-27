@@ -6,7 +6,7 @@ private String ELLIPISES = "....";
 private Book book;
 
 public BookButton(Book book) {
-	
+	this.book = book;
 	String title = book.getTitle();
 	int charCount = title.length();
 	

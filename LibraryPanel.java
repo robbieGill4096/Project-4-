@@ -26,7 +26,7 @@ public class LibraryPanel extends JPanel {
 	private JButton importButton;
 
 	public LibraryPanel(ActionListener actionListener) {
-		
+		this.bookButtonListener = actionListener;
 		
 		//#1-4
 		bookListPanel = new JPanel();

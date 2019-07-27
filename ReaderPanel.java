@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -60,9 +61,10 @@ public class ReaderPanel extends JPanel {
 		bookTextArea.setEditable(false);
 		bookTextArea.setBorder(BorderFactory.createTitledBorder("BookTextArea"));
 		
-		bookTextScrollPane = new JScrollPane(bookTextScrollPane);
+		bookTextScrollPane = new JScrollPane(bookTextArea);
+		
 		bookTextScrollPane.setPreferredSize(new Dimension(200,200));
-		bookTextScrollPane.setBorder(BorderFactory.createTitledBorder("ItemTextScroll"));
+		bookTextScrollPane.setBorder(BorderFactory.createTitledBorder("bookTextScrollPane"));
 		
 		//------------------------------------
 		
@@ -70,50 +72,35 @@ public class ReaderPanel extends JPanel {
 		//				Navigation Panel
 		//-----------------------------------
 		
-		pageUpButton = new JButton();
-		pageDownButton = new JButton();
+		pageUpButton = new JButton("PUp");
+		pageDownButton = new JButton("PDown");
 		navigationPanel = new JPanel();
+		navigationPanel.add(pageUpButton);
+		navigationPanel.add(pageDownButton);
+		bookTextScrollPane.setPreferredSize(new Dimension(200,50));
+		bookTextScrollPane.setBorder(BorderFactory.createTitledBorder("Navigation Panel"));
 		//------------------------------------
 		
+		// add all panels to readerPanel
+		this.setLayout(new BorderLayout());
+		this.add(bookTextScrollPane, BorderLayout.CENTER);
+		this.add(infoPanel, BorderLayout.NORTH);
+		this.add(navigationPanel,BorderLayout.SOUTH);
+		this.setBorder(BorderFactory.createTitledBorder("ReaderPanel"));
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		//information bar sub panel.with JLabels for Title,
-		//Author and Page. The page label should display both 
-		//the current page as well as the total number of 
-		//pages. These values should be updated whenever a new book 
-		//is selected AND whenever the window is resized.
 
-		
-		/**Sub-panel as a “navigation bar” with JButtons for 
-		 * Page-Up  / Page-Down functionality. The page up button 
-		 * should be disabled if the document is scrolled all the
-		 *  way to the top. The page down button should be disabled 
-		 *  if the document is scrolled all the way to the bottom.
-		 */
-		
-		//A JTextArea placed within a JScrollPane to display the book text.
-		
-		//this is where you left off--------------------
-		//specify the lines and clolumns of bookTextArea.
+	
 		
 	}
 	public void loadBook(Book book) {
+		//set label.
+		titleLabel.setText(book.getTitle());
+		authorLabel.setText(book.getAuthor());
+		//pageLabel.setText(book.get);;
 		
+		String bookText = book.getText();
+		bookTextArea.setText(bookText);
+		this.revalidate();
 	}
 private class PagingActionListener implements ActionListener {
 
