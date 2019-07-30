@@ -3,6 +3,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 /**
  * @author Robbie
  *
@@ -115,9 +117,8 @@ public void loadLibraryFromCSV(String csvFilename) {
 			}
 		} 
 			catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-				System.out.println("ERROR!");
-			e.printStackTrace();
+				String optionError = "Invalid FileName\nPlease Enter a valid CSV file";
+				JOptionPane.showMessageDialog(null, optionError,"",JOptionPane.ERROR_MESSAGE);
 		}
 	
 	

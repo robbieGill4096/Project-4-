@@ -36,7 +36,7 @@ public class LibraryPanel extends JPanel {
 		bookListScrollPane = new JScrollPane(bookListPanel);
 		bookListScrollPane.setPreferredSize(new Dimension(128,256));
 		bookListScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		bookListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+	 
 		bookListScrollPane.setBorder(BorderFactory.createTitledBorder("BookList Scroll"));
 		//#5-
 		importActionListener importActionListener = new importActionListener();
@@ -73,12 +73,6 @@ public class LibraryPanel extends JPanel {
 			ArrayList<Book> libraryArray=library.getBooks();
 			//create conditional checks to make sure csv is valid, if valid:
 			int numItems = libraryArray.size();
-			//remove previous catalog of books.
-			
-			//loop{
-			for(Book book: libraryArray) {
-				System.out.println(book);
-			}
 			//iterate through library books use bookButton to create a new book button pointing to 
 			//each instance
 			//add action listener to each button 

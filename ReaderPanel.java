@@ -1,5 +1,7 @@
+import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Scrollbar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -11,6 +13,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -27,9 +30,10 @@ public class ReaderPanel extends JPanel {
 	private JPanel navigationPanel;
 	private JButton pageUpButton;
 	private JButton pageDownButton;
-	private int pageNum;
-	private int numPages;
-	
+	private static int pageNum;
+	private static int numPages;
+	private JScrollBar scrollBar;
+	private static int scrollbarCall = 0;
 	public ReaderPanel() {
 		
 		
@@ -61,64 +65,123 @@ public class ReaderPanel extends JPanel {
 		bookTextArea.setEditable(false);
 		bookTextArea.setBorder(BorderFactory.createTitledBorder("BookTextArea"));
 		
-		bookTextScrollPane = new JScrollPane(bookTextArea);
 		
+		bookTextScrollPane = new JScrollPane(bookTextArea);
 		bookTextScrollPane.setPreferredSize(new Dimension(200,200));
 		bookTextScrollPane.setBorder(BorderFactory.createTitledBorder("bookTextScrollPane"));
-		
+	
 		//------------------------------------
 		
 
 		//				Navigation Panel
 		//-----------------------------------
+		PagingUpActionListener PagingUpActionListener = new PagingUpActionListener();
+		PagingDownActionListener PagingDownActionListener = new PagingDownActionListener();
 		
 		pageUpButton = new JButton("PUp");
 		pageDownButton = new JButton("PDown");
+		pageUpButton.addActionListener(PagingUpActionListener);
+		pageDownButton.addActionListener(PagingDownActionListener);
 		navigationPanel = new JPanel();
 		navigationPanel.add(pageUpButton);
 		navigationPanel.add(pageDownButton);
 		bookTextScrollPane.setPreferredSize(new Dimension(200,50));
 		bookTextScrollPane.setBorder(BorderFactory.createTitledBorder("Navigation Panel"));
 		//------------------------------------
-		
 		// add all panels to readerPanel
+		JScrollBar scrollBar= bookTextScrollPane.getVerticalScrollBar();
+		ScrollBarListener ScrollBarListener = new ScrollBarListener();
+		scrollBar.addAdjustmentListener(ScrollBarListener);
+		numPages = scrollBar.getMaximum();
 		this.setLayout(new BorderLayout());
-		this.add(bookTextScrollPane, BorderLayout.CENTER);
 		this.add(infoPanel, BorderLayout.NORTH);
 		this.add(navigationPanel,BorderLayout.SOUTH);
+		this.add(bookTextScrollPane, BorderLayout.CENTER);
 		this.setBorder(BorderFactory.createTitledBorder("ReaderPanel"));
-		
-
-	
-		
+		pageNum = 0;
+		scrollBar.getValue();
 	}
+	
+	
 	public void loadBook(Book book) {
 		//set label.
-		titleLabel.setText(book.getTitle());
-		authorLabel.setText(book.getAuthor());
-		//pageLabel.setText(book.get);;
+		titleLabel.setText(book.getTitle()+"  ");
+		authorLabel.setText(book.getAuthor()+"  ");
+		pageLabel.setText(bookTextScrollPane.getVerticalScrollBar().getValue()+ "/"+ bookTextScrollPane.getVerticalScrollBar().getMaximum());
 		
 		String bookText = book.getText();
 		bookTextArea.setText(bookText);
+		bookTextArea.getText();
 		this.revalidate();
 	}
-private class PagingActionListener implements ActionListener {
-
+	
+private class PagingDownActionListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		JScrollBar scrollBar= bookTextScrollPane.getVerticalScrollBar();
+		int pageHeight = scrollBar.getBlockIncrement(bookTextArea.getHeight());
+		//scrollBar.getMaximum();
+		//scrollBar.getMinimum();
+		if (pageNum < 0){
+			//scrollBar.setValue(0);
+			pageNum = 0;
+			scrollBar.getValue();
+		}
+	
+		
+		if ((JButton)e.getSource() == pageDownButton) {
+			scrollBar.setValue(pageNum +=pageHeight);
+			scrollBar.getValue();
+			}
 		
 	}
-	
 }
-	public class ScrollBarListener implements AdjustmentListener {
-
-		@Override
-		public void adjustmentValueChanged(AdjustmentEvent arg0) {
-			// TODO Auto-generated method stub
+private class PagingUpActionListener implements ActionListener {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JScrollBar scrollBar= bookTextScrollPane.getVerticalScrollBar();
+		numPages = scrollBar.getMaximum();
+		int pageHeight = scrollBar.getBlockIncrement(bookTextArea.getHeight());
+		
+		if (pageNum < 0){
+			pageNum = 0;
+			scrollBar.getValue();
+		}
+		
+		if (numPages < pageNum){
+			pageNum = numPages;
+			scrollBar.getValue();
 			
 		}
 		
+		if ((JButton)e.getSource() == pageUpButton) {
+			scrollBar.setValue(pageNum -=pageHeight);
+			scrollBar.getValue();
+	
+		}
+	
+		  
+		
+	}
+}
+	private class ScrollBarListener implements AdjustmentListener {
+		
+		@Override
+		public void adjustmentValueChanged(AdjustmentEvent arg0) {
+			
+			try {
+				pageNum = arg0.getValue();
+				
+				int pageHeight = bookTextScrollPane.getVerticalScrollBar().getHeight();
+				int pageIndex = (pageNum/pageHeight) + 1;
+				pageLabel.setText("  " + pageIndex + "/"+ (bookTextScrollPane.getVerticalScrollBar().getMaximum())/pageHeight);
+			}
+			catch(Exception e){
+				
+			}
+			
+			
+		}
 		
 	}
 }

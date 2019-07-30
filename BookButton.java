@@ -12,13 +12,13 @@ public BookButton(Book book) {
 	
 	
 	
-	
 	if  (charCount > 20) {
 	String ellipTitle = book.getTitle().substring(0,21) + ELLIPISES;
-	this.setText(ellipTitle);
+	setTitleText(ellipTitle);
 	}
 	else {
-	this.setText(book.getTitle());
+	String subbedBook = book.getTitle();
+	setTitleText(subbedBook);
 	}
 }
 public Book getBook(){

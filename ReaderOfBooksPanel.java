@@ -29,9 +29,9 @@ public class bookButtonListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-			System.out.println("bookButtonListener Preformed.");
 			BookButton bookButton = (BookButton)(arg0.getSource());
 			ReaderPanel.loadBook(bookButton.getBook());
+		
 	}
 		
 	}
